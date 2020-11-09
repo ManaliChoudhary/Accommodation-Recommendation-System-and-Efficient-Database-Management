@@ -1,0 +1,341 @@
+--Importing JSON files for MongoDB--
+mongoimport --db FIT5137_Assign_C3 --collection host --file D:\assignment_data\host.json
+mongoimport --db FIT5137_Assign_C3 --collection listing --file D:\assignment_data\listing.json
+
+--Create index for referencing model--
+
+db.listing.createIndex({"neighbourhood":1});
+
+db.listing.createIndex({"neighbourhood":1,"price":1});
+
+db.host.createIndex({"host_name":1});
+
+--Create index for embedding model--
+
+db.listing_host.createIndex({"neighbourhood":1});
+
+db.listing_host.createIndex({"neighbourhood":1,"price":1});
+
+db.listing_host.createIndex({"host_info.host_name":1});
+
+--Create embedding model--
+
+db.listing.aggregate([
+ { $lookup : {
+ from : "host",
+ localField : "host_id",
+ foreignField : "host_id",
+ as : "host_info"
+ } },
+ {
+ $out:"listing_host"
+ }
+]);
+
+--Q1.--
+
+--Reference--
+
+db.listing.aggregate([
+  {$project: {month: {$month: "$last_review"},year: {$year: "$last_review"},id:1}},
+  { $match: {month: 12, year:2018 } },
+  {$count: "no_of_accomodations"}
+]);
+
+--Embedded--
+
+db.listing_host.aggregate([
+  {$project: {month: {$month: "$last_review"},year: {$year: "$last_review"},id:1}},
+  { $match: {month: 12, year:2018 } },
+  {$count: "no_of_accomodations"}
+]);
+
+--Q2.--
+
+--Reference--
+
+db.listing.aggregate([
+{ $match: {neighbourhood: "Port Phillip"} },
+{ $group: { _id: "$neighbourhood", avgPrice: { $avg:"$price"  } } }
+]).pretty();
+
+--Embedded--
+
+db.listing_host.aggregate([
+{ $match: {neighbourhood: "Port Phillip"} },
+{ $group: { _id: "$neighbourhood", avgPrice: { $avg:"$price"  } } }
+]).pretty();
+
+
+--Q3.--
+
+--Reference--
+
+db.listing.aggregate([
+{ $group: { _id: "$neighbourhood", reviews_per_month: { $avg:"$reviews_per_month"  } } },
+ { $sort : { "reviews_per_month" : -1 } },
+{ $limit : 10 },
+ { $project: {neighbourhood : "$_id",_id:0} }
+]).pretty();
+
+--Embedded--
+
+db.listing_host.aggregate([
+{ $group: { _id: "$neighbourhood", reviews_per_month: { $avg:"$reviews_per_month"  } } },
+ { $sort : { "reviews_per_month" : -1 } },
+{ $limit : 10 },
+ { $project: {neighbourhood : "$_id",_id:0} }
+]).pretty();
+
+--Q4.--
+
+--Reference--
+db.listing.aggregate([
+{ $group: { _id: null, maxRange: { $max:"$number_of_reviews"  }, minRange: { $min:"$number_of_reviews"  } } },
+ { $project: { _id:0, minNumberOfReviews : "$minRange", maxNumberOfReviews : "$maxRange" }}
+]).pretty();
+
+--Embedded--
+db.listing_host.aggregate([
+{ $group: { _id: null, maxRange: { $max:"$number_of_reviews"  }, minRange: { $min:"$number_of_reviews"  } } },
+ { $project: { _id:0, minNumberOfReviews : "$minRange", maxNumberOfReviews : "$maxRange" }}
+]).pretty(); 
+
+--Q5.--
+
+--Reference--
+
+db.listing.aggregate([
+ { $group : { _id : "$room_type", noOfOccurence : { $sum: 1 } } },
+ { $sort : { "noOfOccurence" : -1 } },
+ {$limit : 1},
+ { $project: {room_type : "$_id",_id:0} }
+]).pretty();
+
+--Embedded--
+
+db.listing_host.aggregate([
+ { $group : { _id : "$room_type", noOfOccurence : { $sum: 1 } } },
+ { $sort : { "noOfOccurence" : -1 } },
+ {$limit : 1},
+ { $project: {room_type : "$_id",_id:0} }
+]).pretty();
+
+--Q6.--
+
+--Reference--
+
+db.listing.aggregate([
+ { $sort : { "price" : -1 } },
+ { $limit : 5 },
+ { $project: {neighbourhood:1,_id:0} }
+]).pretty();
+
+--Embedded--
+
+db.listing_host.aggregate([
+ { $sort : { "price" : -1 } },
+ { $limit : 5 },
+ { $project: {neighbourhood:1,_id:0} }
+]).pretty();
+
+--Q7.--
+
+--Reference--
+
+db.host.aggregate([
+ { $lookup : {
+ from : "listing",
+ localField : "host_id",
+ foreignField : "host_id",
+ as : "host_listing"
+ } },
+ { $match: {host_name : "Eleni"} },
+ {$project: { _id: 0, host_name: 1, host_listing: 1}}
+]).pretty();
+
+--Embedded--
+
+db.listing_host.aggregate([
+ { $match: {"host_info.host_name" : "Eleni"} },
+ {$project: { _id: 0, host_info: 0}}
+]).pretty();
+
+--Q8.--
+
+--Reference--
+
+db.host.aggregate([
+ { $lookup : {
+ from : "listing",
+ localField : "host_id",
+ foreignField : "host_id",
+ as : "host_listing"
+ } },
+ { $match:{$and:[ {host_response_time : "within a few hours","host_listing.room_type" : {$regex: "Entire home"}}]} },
+ { $project: {host_listing : 1,_id:0} }
+]).pretty();
+
+--Embedded--
+
+db.listing_host.aggregate([
+ { $match:{$and:[ {"host_info.host_response_time" : "within a few hours",room_type : {$regex: "Entire home"}}]} },
+ { $project: {host_info : 0,_id:0} }
+]).pretty();
+
+--Q9.--
+
+--Reference--
+
+db.host.aggregate([
+ { $lookup : {
+ from : "listing",
+ localField : "host_id",
+ foreignField : "host_id",
+ as : "host_listing"
+ } },
+ { $match: {$and:[ {host_name : "Colin", "host_listing.amenities" : {$regex : "Internet"}, "host_listing.amenities" : {$regex : "Gym Access"} }] }},
+ { $project: {host_listing : 1,_id:0} }
+]).pretty();
+
+--Embedded--
+
+db.listing_host.aggregate([
+ { $match: {$and:[ {"host_info.host_name" : "Colin", "amenities" : {$regex : "Internet"}, "amenities" : {$regex : "Gym Access"} }] }},
+ { $project: {host_info : 1,_id:0} }
+]).pretty();
+
+--Q10.--
+
+Reference
+
+db.listing.aggregate([
+ { $match: {$and:[ {street : {$regex : "Clayton"}, "name" : {$regex : "Beautiful"}}] }},
+ { $project: {price : 1,room_type:1,_id:0} }
+]).pretty();
+
+--Embedded--
+
+db.listing_host.aggregate([
+ { $match: {$and:[ {street : {$regex : "Clayton"}, "name" : {$regex : "Beautiful"}}] }},
+ { $project: {price : 1,room_type:1,_id:0} }
+]).pretty();
+
+--Q11.--
+
+--Reference--
+
+db.listing.aggregate([
+ { $project: 
+ {
+   _id:0,
+   listingDetails: { $concat: ["$name", ", ", { $rtrim: { input: "$street", chars: ", Australia"} }, ", ", {$substr: ["$zipcode", 0, -1]}, ", ", "$neighbourhood"] } } },
+ { $sort: { "listingDetails": 1 } }
+]).pretty();
+
+--Embedded--
+
+db.listing_host.aggregate([
+ { $project: 
+ {
+   _id:0,
+   listingDetails: { $concat: ["$name", ", ", { $rtrim: { input: "$street", chars: ", Australia"} }, ", ", {$substr: ["$zipcode", 0, -1]}, ", ", "$neighbourhood"] } } },
+ { $sort: { "listingDetails": 1 } }
+]).pretty();
+
+--Q12.--
+
+--Reference--
+
+db.listing.aggregate(
+	[
+		{
+			$sort:
+			{
+				"availability_365" : -1
+				
+			}
+		},
+		{$limit : 1},
+		{$project: {name:1, _id:0,"reportGenerationTime": { $add: [new Date()] }
+		}}
+	]
+).pretty();
+
+--Embedded--
+
+db.listing_host.aggregate(
+	[
+		{
+			$sort:
+			{
+				"availability_365" : -1
+				
+			}
+		},
+		{$limit : 1},
+		{$project: {name:1, _id:0,"reportGenerationTime": { $add: [new Date()] }
+		}}
+	]
+).pretty();
+
+--Q13.--
+
+--Reference--
+
+db.listing.aggregate([{$group :{ _id: "$neighbourhood",avg_price: {$avg:"$price"},}},
+{$match:{avg_price:{$gt:50}}},{$project:{neighbourhood:"$_id",avg_price:"$avg_price",_id:0}},
+{$sort:{_id:-1}}
+]);
+
+--Embedded--
+
+db.listing_host.aggregate([{$group :{ _id: "$neighbourhood",avg_price: {$avg:"$price"},}},
+{$match:{avg_price:{$gt:50}}},{$project:{neighbourhood:"$_id",avg_price:"$avg_price",_id:0}},
+{$sort:{_id:-1}}
+]);
+
+--Q14.--
+
+--Reference--
+
+db.host.aggregate([
+{$project :{_id : 0, host_id: 1, host_name: 1,"number of verification methods" : { $size: "$host_verifications" }}},
+{$sort:{"number of verification methods":-1}}
+]);
+
+--Embedded--
+
+db.listing_host.aggregate([
+{ $unwind : "$host_info" },
+{$project :{_id : 0, "host_info.host_id": 1, "host_info.host_name": 1,"number of verification methods" : { $size: "$host_info.host_verifications" }}},
+{$sort:{"number of verification methods":-1}}
+]);
+
+--Additional queries--
+
+--1.Display the cheapest neighbourhoods based on average price.--
+
+db.listing.aggregate([
+{ $group: { _id: "$neighbourhood", avgPrice: { $avg:"$price"  } } },
+ { $project: {neighbourhood : "$_id",avgPrice:1 ,_id:0} },
+ { $sort : { "avgPrice" : 1 } }
+]).pretty();
+
+
+--2.Display the average number of reviews for a host.--
+db.listing_host.aggregate([
+{$unwind : "$host_info" },
+{ $group: { "_id": "$host_info.host_id", avgReviewCount: { $avg:"$number_of_reviews"  } } },
+ { $project: {host_id : "$_id",avgReviewCount:1 ,_id:0} },
+ { $sort : { "avgReviewCount" : -1 } }
+]).pretty();
+
+
+--3.Display the most popular listings (based on availability_365).--
+
+ db.listing.aggregate([
+ { $group : { _id : "$name", mostPopular : { $min: "$availability_365" } } },
+ { $match: {mostPopular: 0} },
+ { $project: {name : "$_id",_id:0} }
+]).pretty();

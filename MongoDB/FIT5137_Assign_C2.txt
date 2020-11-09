@@ -1,0 +1,96 @@
+--Q1--
+db.host.updateOne(
+{ host_name : "Adam" },
+{
+$push: { host_verifications : "facebook" },
+$currentDate: { lastModified: true }
+}
+);
+
+--Q2--
+db.host.insertMany([
+{
+host_id : "MONHOS11",
+host_name : "Alison",
+host_verifications : ["email","phone","facebook","reviews"],
+host_since : new Date("2019-01-09"),
+host_location : { suburb : "Caulfield", state : "Victoria", country : "Australia" },
+host_response_rate : "within an hour",
+is_superhost : false
+},
+{
+host_id : "MONHOS12",
+host_name : "Mike",
+host_verifications : ["email","phone"],
+host_since : new Date("2019-01-09"),
+host_location : { suburb : "Clayton", state : "Victoria", country : "Australia" },
+host_response_rate : "within a day",
+is_superhost : true
+},
+{
+host_id : "MONHOS13",
+host_name : "Robyn",
+host_verifications : ["facebook","reviews"],
+host_since : new Date("2019-01-09"),
+host_location : { suburb : "Berwick", state : "Victoria", country : "Australia" },
+host_response_rate : "within an hour",
+is_superhost : false
+},
+{
+host_id : "MONHOS14",
+host_name : "Daniel",
+host_verifications : ["email","manual offline","work email"],
+host_since : new Date("2019-01-09"),
+host_location : { suburb : "Frankston", state : "Victoria", country : "Australia" },
+host_response_rate : "within a day",
+is_superhost : true
+},
+{
+host_id : "MONHOS15",
+host_name : "Ron",
+host_verifications : ["facebook"],
+host_since : new Date("2019-01-09"),
+host_location : { suburb : "Caulfield", state : "Victoria", country : "Australia" },
+host_response_rate : "within a day",
+is_superhost : false
+}
+])
+;
+
+--Q3--
+db.host.updateOne(
+{host_response_rate:"within an hour",is_superhost:false},
+{
+$set: { is_superhost : true },
+$currentDate: { lastModified: true }
+}
+);
+
+--Q4--
+db.listing.deleteMany({ availability : 0 });
+
+--Q5--
+db.listing.updateMany(
+{neighbourhood:"Monash"},
+{
+$set: { neighbourhood:"Monash City" },
+$currentDate: { lastModified: true }
+}
+);
+
+--Q6--
+select listing_id,reviewer_id from review where review_id='REV11';
+
+update review set satisfied_reason= {'space','price'} where review_id='REV11' and 
+listing_id = 'MONLST09' and 
+reviewer_id = 500011;
+
+--Q7--
+
+create index on review (reviewer_id);
+
+select review_id,listing_id from review where reviewer_id=500015;
+
+delete from review where reviewer_id = 500015 and 
+review_id= 'REV15' and
+listing_id=  'MONLST13';

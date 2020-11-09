@@ -1,0 +1,66 @@
+--IMPORT--
+CREATE KEYSPACE FIT5137_Assign_C3
+WITH replication = {'class': 'SimpleStrategy',
+'replication_factor' : 1};
+
+use FIT5137_Assign_C3;
+
+CREATE TABLE review (listing_id int,
+id int,
+date date,
+reviewer_id int,
+reviewer_name text,
+review_scores_rating int,
+comments text, 
+PRIMARY KEY ((listing_id),id,reviewer_id)
+) ;
+
+COPY FIT5137_Assign_C3.review (listing_id,id,date,reviewer_id,reviewer_name,review_scores_rating,comments) 
+FROM 'C:\Users\Manali Choudhary\Documents\Sem2\adb\assignment_data\assignment_data\review.csv' WITH HEADER=TRUE;
+
+
+select count(*) from review;
+
+
+--Q15--
+
+select id, listing_id, comments, max(date) from review where listing_id = 10803 ;
+
+--Q16--
+
+select * from review where review_scores_rating > 70 and review_scores_rating < 90 allow filtering ;
+
+--Q17--
+
+select listing_id, reviewer_name,comments from review where review_scores_rating < 50 allow filtering; 
+
+--Q18--
+
+select count(*) from review where date >= '2015-01-01' and date <= '2015-12-31' allow filtering;
+
+--Q19--
+create index on review(date);
+
+select id, reviewer_name,comments, max(review_scores_rating) from review where date = '2017-03-26';
+
+
+--Q20--
+select max(review_scores_rating) from review; -- 100
+
+select listing_id, reviewer_name, max(review_scores_rating) from review where review_scores_rating = 100 group by listing_id allow filtering;
+
+
+----EXTRA QUERIES----
+
+
+
+--4. Display each listing with the count of total reviews, the most recent date of the review, reviewer name and its rating.--
+
+select count(*),max(date) as Date,reviewer_name,comments, review_scores_rating from review
+group by listing_id;
+
+
+
+--5. Display the average rating of the each listing.--
+
+select listing_id,avg(review_scores_rating) as Average_rating from review group by listing_id;

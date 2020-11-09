@@ -1,0 +1,343 @@
+use FIT5137_Assign;
+
+db.createCollection("listing");
+
+db.createCollection("host");
+
+db.host.insertOne({
+host_id : "MONHOS01",
+host_name : "Manju",
+host_verifications : ["email","phone","reviews"],
+host_since : new Date("2009-08-21"),
+host_location : { suburb : "Clayton", state : "Victoria", country : "Australia" },
+host_response_rate : "within a day",
+is_superhost : false
+});
+
+db.host.insertOne({
+host_id : "MONHOS02",
+host_name : "Lindsay",
+host_verifications : ["email","phone","reviews","jumio","government id"],
+host_since : new Date("2009-09-16"),
+host_location : { suburb : "Clifton Hill", state : "Victoria", country : "Australia" },
+host_response_rate : "within an hour",
+is_superhost : true
+});
+
+db.host.insertOne({
+host_id : "MONHOS03",
+host_name : "Adam",
+host_verifications : ["email","phone","google","reviews","jumio","government id","work email"],
+host_since : new Date("2009-10-31"),
+host_location : { suburb : "Port Melbourne", state : "Victoria", country : "Australia" },
+host_response_rate : "within an hour",
+is_superhost : false
+});
+
+db.host.insertOne({
+host_id : "MONHOS04",
+host_name : "Eleni",
+host_verifications : ["email","phone","facebook","reviews","jumio","offline government id","government id","work email"],
+host_since : new Date("2009-12-03"),
+host_location : { suburb : "Fitzroy", state : "Victoria", country : "Australia" },
+host_response_rate : "within a day",
+is_superhost : false
+});
+
+db.host.insertOne({
+host_id : "MONHOS05",
+host_name : "Colin",
+host_verifications : ["email","phone","facebook","reviews","jumio","offline government id","government id"],
+host_since : new Date("2009-12-22"),
+host_location : { suburb : "Saint Kilda East", state : "Victoria", country : "Australia" },
+host_response_rate : "within an hour",
+is_superhost : false
+});
+
+db.host.insertOne({
+host_id : "MONHOS06",
+host_name : "Daryl",
+host_verifications : ["email","phone","manual online","reviews","manual offline","work email"],
+host_since : new Date("2010-07-12"),
+host_location : { suburb : "Berwick", state : "Victoria", country : "Australia" },
+host_response_rate : "within an hour",
+is_superhost : true
+});
+
+db.host.insertOne({
+host_id : "MONHOS07",
+host_name : "Diana",
+host_verifications : ["email","phone","facebook","reviews","jumio","offline government id","government id","work email"],
+host_since : new Date("2010-07-27"),
+host_location : { suburb : "Parkdale", state : "Victoria", country : "Australia" },
+host_response_rate : "within a day",
+is_superhost : false
+});
+
+db.host.insertOne({
+host_id : "MONHOS08",
+host_name : "Belinda",
+host_verifications : ["email","phone","facebook","reviews","jumio","offline government id","selfie","government id","identity manual","work email"],
+host_since : new Date("2010-08-03"),
+host_location : { suburb : "Prahan", state : "Victoria", country : "Australia" },
+host_response_rate : "within a few hours",
+is_superhost : false
+});
+
+db.host.insertOne({
+host_id : "MONHOS09",
+host_name : "Allan",
+host_verifications : ["email","phone","facebook","reviews","jumio","offline government id","selfie","government id","identity manual"],
+host_since : new Date("2010-08-03"),
+host_location : { suburb : "South Melbourne", state : "Victoria", country : "Australia" },
+host_response_rate : "within an hour",
+is_superhost : true
+});
+
+db.host.insertOne({
+host_id : "MONHOS10",
+host_name : "Vicki",
+host_verifications : ["email","phone","facebook","reviews","jumio","government id"],
+host_since : new Date("2010-08-06"),
+host_location : { suburb : "Frankston", state : "Victoria", country : "Australia" },
+host_response_rate : "within an hour",
+is_superhost : true
+});
+
+db.listing.insertOne({
+listing_id : "MONLST01",
+name : "Monash Beautiful House",
+host_id : "MONHOS14",
+neighbourhood : "Manningham",
+address : { suburb : "Clayton", state : "VIC", postcode : "3800" },
+latitude : -37.773,
+longitude : 145.09213,
+room_type : "Entire home",
+amenities : ["TV","Wifi","Pets Allowed","Family friendly","24-hour check-in","Self check-in"],
+price_per_night : 61,
+price_for_extra_people : 22,
+min_nights_for_booking : 1,
+availability : 365
+}
+);
+
+db.listing.insertOne({
+listing_id : "MONLST02",
+name : "Monash Brunswick Deco",
+host_id : "MONHOS08",
+neighbourhood : "Moreland",
+address : { suburb : "Brunswick East", state : "VIC", postcode : "3057" },
+latitude : -37.767,
+longitude : 144.98074,
+room_type : "Private room",
+amenities : ["Kitchen","Toiletries","Hair dryer","Iron","Microwave","Coffee Maker","Refrigerator","Cooking basics","Stove","Garden"],
+price_per_night : 35,
+price_for_extra_people : 15,
+min_nights_for_booking : 3,
+availability : 194
+}
+);
+
+db.listing.insertOne({
+listing_id : "MONLST03",
+name : "Monash Beachside Retreat",
+host_id : "MONHOS01",
+neighbourhood : "Port Phillip",
+address : { suburb : "St Kilda", state : "VIC", postcode : "3182" },
+latitude : -37.86,
+longitude : 144.97737,
+room_type : "Entire home",
+amenities : ["Cooking basics","Oven","Stove","Dishwasher","Balcony","Wifi","Kitchen","Washer","Toiletries","Hair dryer","Iron","Microwave","Coffee Maker","Refrigerator","Long term stay allowed","Luggage dropoff","24-hour check-in","Self check-in"],
+price_per_night : 159,
+price_for_extra_people : 0,
+min_nights_for_booking : 2,
+availability : 82
+}
+);
+
+db.listing.insertOne({
+listing_id : "MONLST04",
+name : "Monash Close2City",
+host_id : "MONHOS04",
+neighbourhood : "Darebin",
+address : { suburb : "Thornbury", state : "VIC", postcode : "3071" },
+latitude : -37.759,
+longitude : 144.98923,
+room_type : "Private room",
+amenities : ["TV","Internet","Wifi","Kitchen Free parking on premises","Breakfast","Heating","Washer","Toiletries","Hair dryer"],
+price_per_night : 50,
+price_for_extra_people : 20,
+min_nights_for_booking : 2,
+availability : 0
+}
+);
+
+db.listing.insertOne({
+listing_id : "MONLST05",
+name : "Monash City and Sports",
+host_id : "MONHOS05",
+neighbourhood : "Port Phillip",
+address : { suburb : "St Kilda", state : "VIC", postcode : "3183" },
+latitude : -37.865,
+longitude : 144.99224,
+room_type : "Private room",
+amenities : ["Internet","Wifi","Heating","Washer","Toiletries","Bed linens","Gym Access","24-hour check-in","Self check-in"],
+price_per_night : 69,
+price_for_extra_people : 20,
+min_nights_for_booking : 1,
+availability : 274
+}
+);
+
+db.listing.insertOne({
+listing_id : "MONLST06",
+name : "Monash Trafford Apartment",
+host_id : "MONHOS06",
+neighbourhood : "Casey",
+address : { suburb : "Berwick", state : "VIC", postcode : "3806" },
+latitude : -38.057,
+longitude : 145.33936,
+room_type : "Entire home",
+amenities : ["Microwave","Coffee Maker","Wifi","Kitchen","Toiletries","Hair dryer"],
+price_per_night : 99,
+price_for_extra_people : 30,
+min_nights_for_booking : 1,
+availability : 353
+}
+);
+
+db.listing.insertOne({
+listing_id : "MONLST07",
+name : "Monash Close2Airport",
+host_id : "MONHOS07",
+neighbourhood : "Darebin",
+address : { suburb : "Reservoir", state : "VIC", postcode : "3073" },
+latitude : -37.697,
+longitude : 145.00082,
+room_type : "Private room",
+amenities : ["Long term stay allowed","Luggage dropoff","24-hour check-in","Self check-in","Airport shuttle service","Host greets you","Wifi","Kitchen","Heating","Toiletries","Microwave","Coffee Maker","Refrigerator","Cooking basics","Oven","Stove","Dishwasher","Garden"],
+price_per_night : 50,
+price_for_extra_people : 20,
+min_nights_for_booking : 7,
+availability : 0
+}
+);
+
+db.listing.insertOne({
+listing_id : "MONLST08",
+name : "Monash Home In The City",
+host_id : "MONHOS02",
+neighbourhood : "Melbourne",
+address : { suburb : "East Melbourne", state : "VIC", postcode : "3002" },
+latitude : -37.81,
+longitude : 144.98592,
+room_type : "Private room",
+amenities : ["Cooking basics","TV","Wifi","Pets Allowed","Family friendly","24-hour check-in","Self check-in"],
+price_per_night : 99,
+price_for_extra_people : 25,
+min_nights_for_booking : 15,
+availability : 62
+}
+);
+
+db.listing.insertOne({
+listing_id : "MONLST09",
+name : "Monash JapaneseStyle",
+host_id : "MONHOS11",
+neighbourhood : "Monash",
+address : { suburb : "Oakleigh East", state : "VIC", postcode : "3166" },
+latitude : -37.9,
+longitude : 145.11447,
+room_type : "Entire home",
+amenities : ["Kitchen","Toiletries","Hair dryer","Iron","Microwave","Garden","Coffee Maker","Refrigerator","Cooking basics","Stove","Dishwasher","Balcony","Paid Parking","Long term stay allowed"],
+price_per_night : 98,
+price_for_extra_people : 0,
+min_nights_for_booking : 2,
+availability : 219
+}
+);
+
+db.listing.insertOne({
+listing_id : "MONLST10",
+name : "Beautiful Monash House",
+host_id : "MONHOS10",
+neighbourhood : "Frankston",
+address : { suburb : "Frankston", state : "VIC", postcode : "3199" },
+latitude : -38.149,
+longitude : 145.14157,
+room_type : "Entire home",
+amenities : ["TV","Wifi","AC","Kitchen","Heating","Washer","Toiletries","Hair dryer","Iron","Microwave","Coffee Maker","Refrigerator","Cooking basics","Oven","Stove","Dishwasher","Balcony","Paid Parking","Long term stay allowed","Luggage dropoff","24-hour check-in","Self check-in"],
+price_per_night : 59,
+price_for_extra_people : 10,
+min_nights_for_booking : 2,
+availability : 318
+}
+);
+
+db.listing.insertOne({
+listing_id : "MONLST11",
+name : "Fabulous Monash Richmond",
+host_id : "MONHOS09",
+neighbourhood : "Yarra",
+address : { suburb : "Richmond", state : "VIC", postcode : "3121" },
+latitude : -37.818,
+longitude : 145.00442,
+room_type : "Entire home",
+amenities : ["Bed linen","Wifi","AC","Kitchen","Heating","Washer","Toiletries","Hair dryer","Iron","Microwave","Coffee Maker","Free Parking","Long term stay allowed","Luggage dropoff","24-hour check-in","Self check-in","Host greets you","Refrigerator","Cooking basics","Oven","Stove","Dishwasher","Balcony","Garden"],
+price_per_night : 98,
+price_for_extra_people : 30,
+min_nights_for_booking : 14,
+availability : 16
+}
+);
+
+db.listing.insertOne({
+listing_id : "MONLST12",
+name : "Monash Central Lux",
+host_id : "MONHOS12",
+neighbourhood : "Port Phillip",
+address : { suburb : "St Kilda", state : "VIC", postcode : "3182" },
+latitude : -37.861,
+longitude : 144.98038,
+room_type : "Entire home",
+amenities : ["Wifi","AC","Kitchen","Heating","Toiletries","Hair dryer","Iron","Coffee Maker","Refrigerator","Stove","Dishwasher","Beachside view","Free Parking 24-hour check-in","Self check-in"],
+price_per_night : 189,
+price_for_extra_people : 29,
+min_nights_for_booking : 2,
+availability : 6
+}
+);
+
+db.listing.insertOne({
+listing_id : "MONLST13",
+name : "Central Monash Warehouse Apartment",
+host_id : "MONHOS13",
+neighbourhood : "Melbourne",
+address : { suburb : "Melbourne", state : "VIC", postcode : "3000" },
+latitude : -37.815,
+longitude : 144.96267,
+room_type : "Entire home",
+amenities : ["Dishwasher","Garden","Paid Parking","Long term stay allowed","Coffee Maker","Refrigerator","Cooking basics","Oven","Stove","Wifi","AC","Kitchen","Heating","Washer","Toiletries","Hair dryer","Iron","Microwave","Luggage dropoff","24-hour check-in","Self check-in"],
+price_per_night : 249,
+price_for_extra_people : 40,
+min_nights_for_booking : 2,
+availability : 353
+}
+);
+
+db.listing.insertOne({
+listing_id : "MONLST14",
+name : "Monash Near the Park",
+host_id : "MONHOS03",
+neighbourhood : "Bayside",
+address : { suburb : "Melbourne", state : "VIC", postcode : "3187" },
+latitude : -37.928,
+longitude : 145.02518,
+room_type : "Private room",
+amenities : ["Pets Allowed","Breakfast","Garden","Family friendly","24-hour check-in","Self check-in"],
+price_per_night : 40,
+price_for_extra_people : 11,
+min_nights_for_booking : 2,
+availability : 365
+}
+);
