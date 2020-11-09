@@ -10,6 +10,7 @@ This was a team assignment where we scored the highest grade.
 * Clone this repository into your system
 ```
 git clone https://github.com/ManaliChoudhary/Accommodation-Recommendation-and-Efficient-Database-Management.git
+```
 * Install the 3 databases in your system with the help of the installation guides below
 Windows - Installation Guide
 Mac - Installation Guide
